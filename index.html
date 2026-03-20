@@ -392,5 +392,39 @@ function tampil() {
 tampil();
 </script>
 
+  <script>
+// === TAMPILKAN NAMA TAMU DI COVER ===
+function getParameterByName(name) {
+  let url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  let nama = getParameterByName('nama');
+  let pasangan = getParameterByName('pasangan');
+
+  if(nama) {
+    let cover = document.getElementById('cover');
+    let h2 = document.createElement('h2');
+    h2.style.fontSize = '24px';
+    h2.style.color = 'gold';
+    h2.style.marginBottom = '10px';
+
+    if(pasangan) {
+      h2.innerText = `Selamat datang, ${nama} dan ${pasangan}!`;
+    } else {
+      h2.innerText = `Selamat datang, ${nama}!`;
+    }
+
+    cover.insertBefore(h2, cover.firstChild); // muncul di atas semua konten cover
+  }
+});
+</script>
+  
 </body>
 </html>
