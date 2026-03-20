@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Undangan Pernikahan</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: white;
+      text-align: center;
+      font-family: sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* COVER */
+    #cover {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 999;
+      animation: fadeIn 2s ease;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 10px 0;
+      animation: slideUp 1.5s ease;
+    }
+
+    h2 {
+      font-weight: normal;
+      opacity: 0.8;
+      animation: fadeIn 2s ease;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: gold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: 0.3s;
+      animation: zoomIn 1.5s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    /* ANIMASI */
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* GAMBAR */
+    img {
+      width: 100%;
+      display: block;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: 1s;
+    }
+
+    img.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+/* ===== GUESTBOOK STYLE ===== */
+#guestbook {
+  background: 
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url('bg.jpg') center/cover no-repeat;
+
+  backdrop-filter: blur(8px);
+
+  padding: 30px 15px;
+  margin-top: 40px;
+  border-radius: 20px;
+}
+
+/* input */
+#guestbook input,
+#guestbook textarea {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+/* tabel */
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.05);
+  color: #aaffcc;
+
+  table-layout: fixed; /* 🔥 INI KUNCINYA */
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+th {
+  background: rgba(255,255,255,0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.form-group input,
+.form-group textarea {
+  flex: 1;
+  min-width: 200px;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.stat-box {
+  background: rgba(255,255,255,0.1);
+  padding: 25px 40px;
+  border-radius: 20px;
+  color: #f5f5dc;
+  min-width: 150px;
+  font-size: 20px;
+}
+.stat-box b {
+  display: block;
+  font-size: 26px;
+  margin-top: 5px;
+}
+
+tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button-group button {
+  flex: 1;
+  max-width: 200px;
+  background: #28a745;
+  color: white;
+  font-weight: bold;
+}
+
+.button-group button:last-child {
+  background: #dc3545; /* merah untuk tidak hadir */
+}
+
+#guestbook h2 {
+  font-size: 28px;
+}
+
+#guestbook h3 {
+  font-size: 22px;
+}
+
+#guestbook p,
+#guestbook td,
+#guestbook th {
+  font-size: 16px;
+}
+
+td.nama   {
+  color: #ffffff; 
+text-align: left;
+text-shadow: 0 0 5px rgba(255,255,255,0.3);
+padding-left: 150px; 
+}
+
+td.ucapan {
+  color: #ffffff; 
+text-align: left;
+text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+td.hadir {
+  color: #28a745;
+  font-weight: bold;
+text-align: center;
+}
+
+td.tidak {
+  color: #dc3545;
+  font-weight: bold;
+text-align: center;
+}
+
+  </style>
+</head>
+
+<body>
+
+<!-- 🔒 COVER -->
+<div id="cover">
+  <h2>The Wedding Of</h2>
+  <h1>Anih & Jahda</h1>
+  <button onclick="bukaUndangan()">💌 Buka Undangan</button>
+</div>
+
+<!-- 🎵 MUSIK -->
+<audio id="musik" loop>
+  <source src="musik.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🖼️ GAMBAR -->
+<img src="undangan1.png">
+<img src="undangan2.png">
+<img src="undangan3.png">
+<img src="undangan4.png">
+<img src="undangan5.png">
+<img src="undangan6.png">
+
+<div id="guestbook">
+  <h2 style="font-size:30px; color:#aaffcc;">💌 Buku Tamu</h2>
+
+<div class="form-group">
+  <input type="text" id="nama" placeholder="Nama">
+  <textarea id="pesan" placeholder="Ucapan"></textarea>
+</div>
+
+<div class="button-group">
+  <button onclick="kirim('Hadir')">Hadir</button>
+  <button onclick="kirim('Tidak Hadir')">Tidak Hadir</button>
+</div>
+
+  <h3 style="font-size:30px; color:#aaffcc;">📊 Statistik</h3>
+  <div class="stats">
+  <div class="stat-box">
+    <div>Hadir</div>
+    <b id="hadir">0</b>
+  </div>
+
+  <div class="stat-box">
+    <div>Tidak Hadir</div>
+    <b id="tidak">0</b>
+  </div>
+
+</div>
+
+  <h3 style="font-size:30px; color:#aaffcc;">💬 Ucapan</h3>
+  <table>
+  <thead>
+    <tr>
+      <th style="color:#ffffff; text-shadow: 0 0 5px rgba(255,255,255,0.3);">Nama</th>
+      <th style="color:#ffffff; text-shadow: 0 0 5px rgba(255,255,255,0.3);">Status</th>
+      <th style="color:#ffffff; text-shadow: 0 0 5px rgba(255,255,255,0.3);">Ucapan</th>
+    </tr>
+  </thead>
+  <tbody id="list"></tbody>
+</table>
+</div>
+
+<script>
+function bukaUndangan() {
+  document.getElementById("cover").style.display = "none";
+  document.getElementById("musik").play();
+}
+
+/* animasi scroll */
+let images = document.querySelectorAll("img");
+
+window.addEventListener("scroll", function() {
+  let trigger = window.innerHeight;
+
+  images.forEach(img => {
+    let top = img.getBoundingClientRect().top;
+
+    if(top < trigger - 100) {
+      img.classList.add("show");
+    }
+  });
+});
+
+</script>
+
+<h2 style="color:#000;">Kehadiran & Doa</h2>
+<p style="color:#000;">Merupakan suatu kehormatan bagi kami apabila Anda berkenan hadir.</p>
+<p style="color:#000;">“Designed by Jahda, assisted by Canva and GPT”</p>
+
+<script>
+const url = "https://script.google.com/macros/s/AKfycbxxNz4xteV8_SJ__yA6YtJyvjFFigRdv8ZOUxO5bJPLfdP3OMrjHqWG4LVOsAS4iFtF/exec";
+
+function kirim(status) {
+  let nama = document.getElementById("nama").value.trim();
+  let pesan = document.getElementById("pesan").value.trim();
+
+  if(nama === "") {
+    alert("Nama wajib diisi!");
+    return;
+  }
+
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify({nama, pesan, status})
+  })
+  .then(() => {
+    document.getElementById("nama").value = "";
+    document.getElementById("pesan").value = "";
+    tampil();
+  })
+  .catch(err => {
+    alert("Gagal kirim!");
+    console.log(err);
+  });
+}
+
+function tampil() {
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+
+      let hadir = 0;
+      let tidak = 0;
+      let html = "";
+
+      data.slice(1).forEach(d => {
+        if(d[2] === "Hadir") hadir++;
+        else tidak++;
+
+        html += `
+<tr>
+  <td class="nama">${d[0]}</td>
+  <td class="${d[2] === 'Hadir' ? 'hadir' : 'tidak'}">${d[2]}</td>
+  <td class="ucapan">${d[1]}</td>
+</tr>
+`;
+      });
+
+      document.getElementById("hadir").innerText = hadir;
+      document.getElementById("tidak").innerText = tidak;
+      document.getElementById("list").innerHTML = html;
+    })
+    .catch(err => console.log(err));
+}
+
+tampil();
+</script>
+
+</body>
+</html>
