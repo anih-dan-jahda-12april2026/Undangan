@@ -11,7 +11,7 @@
       text-align: center;
       font-family: sans-serif;
       overflow-x: hidden;
-    }
+}
 
     /* COVER */
     #cover {
@@ -241,6 +241,61 @@ td.tidak {
 text-align: center;
 }
 
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: gold;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkleAnim 2s infinite;
+}
+
+@keyframes sparkleAnim {
+  0% { transform: scale(0) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scale(1.5) translateY(-30px); opacity: 0; }
+}
+
+/* bungkus gambar */
+.img-wrapper {
+  position: relative;
+}
+
+
+.leaf {
+  position: fixed;
+  top: -50px;
+  width: 25px;
+  height: 25px;
+  background-image: url('leaf.png'); 
+  background-size: cover;
+  pointer-events: none;
+  z-index: 10000; /* pastikan di atas semua */
+  animation: fall linear forwards;
+}
+
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(50vh) translateX(40px) rotate(180deg);
+  }
+
+  100% {
+    transform: translateY(110vh) translateX(-40px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
   </style>
 </head>
 
@@ -259,12 +314,24 @@ text-align: center;
 </audio>
 
 <!-- 🖼️ GAMBAR -->
-<img src="undangan1.png">
-<img src="undangan2.png">
-<img src="undangan3.png">
-<img src="undangan4.png">
-<img src="undangan5.png">
-<img src="undangan6.png">
+<div class="img-wrapper">
+  <img src="undangan1.png">
+</div>
+<div class="img-wrapper">
+  <img src="undangan2.png">
+</div>
+<div class="img-wrapper">
+  <img src="undangan3.png">
+</div>
+<div class="img-wrapper">
+  <img src="undangan4.png">
+</div>
+<div class="img-wrapper">
+  <img src="undangan5.png">
+</div>
+<div class="img-wrapper">
+  <img src="undangan6.png">
+</div>
 
 <div id="guestbook">
   <h2 style="font-size:30px; color:#aaffcc;">💌 Buku Tamu</h2>
@@ -309,24 +376,17 @@ text-align: center;
 <script>
 function bukaUndangan() {
   document.getElementById("cover").style.display = "none";
+
+  window.scrollTo(0, 0);
+
   document.getElementById("musik").play();
+
+  // 🔥 paksa gambar pertama langsung muncul
+  let firstImg = document.querySelector("img");
+  if(firstImg){
+    firstImg.classList.add("show");
+  }
 }
-
-/* animasi scroll */
-let images = document.querySelectorAll("img");
-
-window.addEventListener("scroll", function() {
-  let trigger = window.innerHeight;
-
-  images.forEach(img => {
-    let top = img.getBoundingClientRect().top;
-
-    if(top < trigger - 100) {
-      img.classList.add("show");
-    }
-  });
-});
-
 </script>
 
 <h2 style="color:#000;">Kehadiran & Doa</h2>
@@ -392,7 +452,70 @@ function tampil() {
 tampil();
 </script>
 
-  <script>
+<script>
+// ✨ SCRIPT BARU (sparkle tadi)
+function tambahSparkle(wrapper) {
+  for(let i = 0; i < 8; i++) {
+    let s = document.createElement("div");
+    s.className = "sparkle";
+
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = Math.random() * 100 + "%";
+    s.style.animationDelay = (Math.random() * 2) + "s";
+
+    wrapper.appendChild(s);
+  }
+}
+
+let wrappers = document.querySelectorAll(".img-wrapper");
+
+window.addEventListener("scroll", function() {
+  let trigger = window.innerHeight;
+
+  wrappers.forEach(wrap => {
+    let img = wrap.querySelector("img");
+    let top = wrap.getBoundingClientRect().top;
+
+    if(top < trigger - 100) {
+      img.classList.add("show");
+
+      if(!wrap.classList.contains("sparkle-added")) {
+        tambahSparkle(wrap);
+        wrap.classList.add("sparkle-added");
+      }
+    }
+  });
+});
+</script>
+
+<script>
+function createLeaf() {
+  let leaf = document.createElement("div");
+  leaf.className = "leaf";
+
+  leaf.style.left = Math.random() * 100 + "vw";
+
+  // 🔥 ukuran lebih besar & bervariasi
+  let size = 40 + Math.random() * 40; // 40px – 80px
+  leaf.style.width = size + "px";
+  leaf.style.height = size + "px";
+
+  leaf.style.animationDuration = (6 + Math.random() * 4) + "s";
+  leaf.style.opacity = 0.7 + Math.random() * 0.3;
+leaf.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+  document.body.appendChild(leaf);
+
+  setTimeout(() => {
+    leaf.remove();
+  }, 10000);
+}
+
+// bikin daun jatuh terus
+setInterval(createLeaf, 800);
+</script>
+
+<script>
 // === TAMPILKAN NAMA TAMU DI COVER ===
 function getParameterByName(name) {
   let url = window.location.href;
@@ -425,6 +548,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
-  
+
 </body>
 </html>
