@@ -5,6 +5,9 @@
   <title>Undangan Pernikahan</title>
 
   <style>
+html {
+  scroll-behavior: smooth;
+}
     body {
       margin: 0;
       background: white;
@@ -296,6 +299,56 @@ text-align: center;
   }
 }
 
+.map-section {
+  margin: 50px 20px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: 1s;
+}
+
+.map-section.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.map-section h2 {
+  color: #000;
+  margin-bottom: 15px;
+}
+
+.map-section iframe {
+  width: 100%;
+  height: 300px;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.map-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.map-buttons button {
+  background: gold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.map-buttons button:hover {
+  transform: scale(1.1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
   </style>
 </head>
 
@@ -324,8 +377,9 @@ text-align: center;
   <img src="undangan3.png">
 </div>
 <div class="img-wrapper">
-  <img src="undangan4.png">
+  <img src="undangan4.png" onclick="scrollKeLokasi()" style="cursor:pointer;">
 </div>
+
 <div class="img-wrapper">
   <img src="undangan5.png">
 </div>
@@ -392,6 +446,24 @@ function bukaUndangan() {
 <h2 style="color:#000;">Kehadiran & Doa</h2>
 <p style="color:#000;">Merupakan suatu kehormatan bagi kami apabila Anda berkenan hadir.</p>
 <p style="color:#000;">“Designed by Jahda, assisted by Canva and GPT”</p>
+<div class="map-section" id="lokasi">
+  <h2>📍 Lokasi Acara</h2>
+
+  <iframe 
+    src="https://maps.google.com/maps?q=-6.8089732,106.0280854&z=15&output=embed"
+    loading="lazy">
+  </iframe>
+
+  <div class="map-buttons">
+    <a href="https://maps.google.com/?q=-6.8089732,106.0280854" target="_blank">
+      <button>📍 Google Maps</button>
+    </a>
+
+    <a href="https://waze.com/ul?ll=-6.8089732,106.0280854&navigate=yes" target="_blank">
+      <button>🚗 Waze</button>
+    </a>
+  </div>
+</div>
 
 <script>
 const url = "https://script.google.com/macros/s/AKfycbxxNz4xteV8_SJ__yA6YtJyvjFFigRdv8ZOUxO5bJPLfdP3OMrjHqWG4LVOsAS4iFtF/exec";
@@ -547,6 +619,27 @@ window.addEventListener("DOMContentLoaded", () => {
     cover.insertBefore(h2, cover.firstChild); // muncul di atas semua konten cover
   }
 });
+</script>
+
+<script>
+let map = document.querySelector(".map-section");
+
+window.addEventListener("scroll", function() {
+  let trigger = window.innerHeight;
+  let top = map.getBoundingClientRect().top;
+
+  if(top < trigger - 100) {
+    map.classList.add("show");
+  }
+});
+</script>
+
+<script>
+function scrollKeLokasi() {
+  document.getElementById("lokasi").scrollIntoView({
+    behavior: "smooth"
+  });
+}
 </script>
 
 </body>
